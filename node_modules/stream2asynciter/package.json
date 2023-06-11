@@ -1,0 +1,24 @@
+{
+  "name": "stream2asynciter",
+  "version": "1.0.3",
+  "description": "Create async iterator from regular stream",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimonKK/stream2asyncIter.git"
+  },
+  "keywords": [
+    "async",
+    "iterator",
+    "stream"
+  ],
+  "author": "Dmitry Berezhnov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TimonKK/stream2asyncIter/issues"
+  },
+  "homepage": "https://github.com/TimonKK/stream2asyncIter#readme"
+}

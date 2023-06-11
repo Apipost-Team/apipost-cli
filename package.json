@@ -1,0 +1,30 @@
+{
+  "name": "apipost-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "apipost": "./bin/cli.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apipost-inside-tools": "^0.1.54",
+    "apipost-runtime": "^1.1.98",
+    "cli-progress": "^3.12.0",
+    "cli-table3": "^0.6.3",
+    "colors": "^1.4.0",
+    "commander": "^10.0.1",
+    "datejs": "^1.0.0-rc3",
+    "lodash": "^4.17.21",
+    "node-fetch": "^3.3.1",
+    "pkginfo": "^0.4.1",
+    "request": "^2.88.2",
+    "retry": "^0.13.1",
+    "validator": "^13.9.0"
+  }
+}
