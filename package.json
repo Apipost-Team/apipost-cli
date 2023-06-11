@@ -1,8 +1,8 @@
 {
   "name": "apipost-cli",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Apipost 命令行运行工具",
+  "main": "bin/cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,8 +10,8 @@
     "apipost": "./bin/cli.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Apipost Team",
+  "license": "UNLICENSED",
   "dependencies": {
     "apipost-inside-tools": "^0.1.54",
     "apipost-runtime": "^1.1.98",
