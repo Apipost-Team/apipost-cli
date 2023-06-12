@@ -41,6 +41,5 @@ Options:
   --ssl-client-key <path>               指定客户端证书私钥路径 (KEY file)
   --ssl-client-passphrase <passphrase>  指定客户端证书密码 (for protected key)
   --ssl-extra-ca-certs <path>           指定额外受信任的 CA 证书 (PEM)
-  --web-hook <url>                      Web-hook用于在任务完成后向指定URL发送数据 (POST)
   -h, --help                            display help for command
 ```

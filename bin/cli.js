@@ -197,7 +197,7 @@ const bindEvent = (program) => {
     .option('--ssl-client-key <path>', `指定客户端证书私钥路径 (KEY file) `)
     .option('--ssl-client-passphrase <passphrase>', `指定客户端证书密码 (for protected key)`)
     .option('--ssl-extra-ca-certs <path>', `指定额外受信任的 CA 证书 (PEM)`)
-    .option('--web-hook <url>', `Web-hook用于在任务完成后向指定URL发送数据 (POST) `)
+    // .option('--web-hook <url>', `Web-hook用于在任务完成后向指定URL发送数据 (POST) `)
     .action((url, options) => {
       parseCommandString(url, options)
     });
