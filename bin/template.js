@@ -761,7 +761,6 @@ const RENDER_TEST_REPORT_HTML_STR = (data = {}) => {
 };
 
 const downloadTestReport = async (data, options, request) => {
-  // console.log(options)
   const homedir = os.homedir();
   const now = dayjs();
   const formattedTime = now.format('YYYY-MM-DD HH:mm:ss');
@@ -781,6 +780,8 @@ const downloadTestReport = async (data, options, request) => {
           fs.writeFileSync(finalFilePath, reportContent);
           break;
         } catch (err) {
+          fs.appendFileSync(path.join(homedir, 'apipost-cli-error.log'), `${formattedTime}\t${String(err)}\n`);
+
           if (err.code === 'ENOENT') {
             fs.mkdirSync(options.outDir, { recursive: true });
             continue;
@@ -792,7 +793,6 @@ const downloadTestReport = async (data, options, request) => {
             continue;
           }
 
-          fs.appendFileSync(path.join(homedir, 'apipost-cli-error.log'), `${formattedTime}\t${String(err)}\n`);
           throw err;
         }
       }

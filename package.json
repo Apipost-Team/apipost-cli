@@ -1,6 +1,6 @@
 {
   "name": "apipost-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Apipost 命令行运行工具",
   "main": "bin/cli.js",
   "scripts": {
@@ -14,7 +14,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "apipost-inside-tools": "^0.1.54",
-    "apipost-runtime": "^1.1.98",
+    "apipost-runtime": "^1.1.99",
     "cli-progress": "^3.12.0",
     "cli-table3": "^0.6.3",
     "colors": "^1.4.0",

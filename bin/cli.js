@@ -75,14 +75,16 @@ const runTestEvents = async (data, options) => {
   }
 
   // 外部数据文件
-  try {
-    let interData = await APTools.str2testDataAsync(fs.readFileSync(String(cliOption.iterationData), "utf-8"));
+  if (cliOption.iterationData != '') {
+    try {
+      let interData = await APTools.str2testDataAsync(fs.readFileSync(String(cliOption.iterationData), "utf-8"));
 
-    if (_.isArray(interData)) {
-      _.set(newOptions, 'option.iterationData', interData)
+      if (_.isArray(interData)) {
+        _.set(newOptions, 'option.iterationData', interData)
+      }
+    } catch (e) {
+      fs.appendFileSync(path.join(homedir, 'apipost-cli-error.log'), `${formattedTime}\t数据文件 ${String(cliOption.iterationData)} 不存在\n`);
     }
-  } catch (e) {
-    fs.appendFileSync(path.join(homedir, 'apipost-cli-error.log'), `${formattedTime}\t数据文件 ${String(cliOption.iterationData)} 不存在\n`);
   }
 
   // 设置发送相关选项参数
