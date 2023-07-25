@@ -424,7 +424,7 @@ const RENDER_TEST_REPORT_HTML_STR = (data = {}) => {
                     </div>
                   </div>
                   <div class="item-info">
-                    <span>请求状况：{{(item?.http_error === 1 || item.assert_error === 1) ? '失败' : '成功'}}</span>
+                    <span>请求状况：{{(item?.http_error === 1) ? '失败' : '成功'}}</span>
                     <span>状态码：{{item?.response?.data?.response?.code}}</span>
                     <span>响应时间：{{item?.response?.data?.response?.responseTime}}ms</span>
                     <span>响应数据大小：{{item?.response?.data?.response?.responseSize}}kb</span>
@@ -463,9 +463,9 @@ const RENDER_TEST_REPORT_HTML_STR = (data = {}) => {
                 {{each value.logList item key}}
                 <div data-text="{{key}}" id="{{key}}" class="test-event-item">
                   <div class="panel">
-                    {{if item.http_error === -1}}
+                    {{if item.http_error === -1 && && item.assert_error === -1}}
                     <img class="status" src="https://img.cdn.apipost.cn/cdn/test-report/img/success.png" alt="" />
-                    {{/if}} {{if item.http_error === 1}}
+                    {{/if}} {{if item.http_error === 1 || item.assert_error === 1}}
                     <img class="status" src="https://img.cdn.apipost.cn/cdn/test-report/img/error.png" alt="" />
                     {{/if}}
   
@@ -477,7 +477,7 @@ const RENDER_TEST_REPORT_HTML_STR = (data = {}) => {
                     </div>
                   </div>
                   <div class="item-info">
-                    <span>请求状况：{{(item?.http_error === 1 || item.assert_error === 1) ? '失败' : '成功'}}</span>
+                    <span>请求状况：{{(item?.http_error === 1) ? '失败' : '成功'}}</span>
                     <span>状态码：{{item?.response?.data?.response?.code}}</span>
                     <span>响应时间：{{item?.response?.data?.response?.responseTime}}ms</span>
                     <span>响应数据大小：{{item?.response?.data?.response?.responseSize}}kb</span>
@@ -538,7 +538,7 @@ const RENDER_TEST_REPORT_HTML_STR = (data = {}) => {
                     </div>
                   </div>
                   <div class="item-info">
-                    <span>请求状况：{{(item?.http_error === 1 || item.assert_error === 1) ? '失败' : '成功'}}</span>
+                    <span>请求状况：{{(item?.http_error === 1) ? '失败' : '成功'}}</span>
                     <span>状态码：{{item?.response?.data?.response?.code}}</span>
                     <span>响应时间：{{item?.response?.data?.response?.responseTime}}ms</span>
                     <span>响应数据大小：{{item?.response?.data?.response?.responseSize}}kb</span>
@@ -577,9 +577,9 @@ const RENDER_TEST_REPORT_HTML_STR = (data = {}) => {
                 {{each value.logList.filter(item => item.test_id === child.test_id) item key}}
                 <div data-text="{{key}}" id="{{key}}" class="test-event-item">
                   <div class="panel">
-                    {{if item.http_error === -1}}
+                    {{if item.http_error === -1 && item.assert_error === -1}}
                     <img class="status" src="https://img.cdn.apipost.cn/cdn/test-report/img/success.png" alt="" />
-                    {{/if}} {{if item.http_error === 1}}
+                    {{/if}} {{if item.http_error === 1 || item.assert_error === 1}}
                     <img class="status" src="https://img.cdn.apipost.cn/cdn/test-report/img/error.png" alt="" />
                     {{/if}}
   
@@ -591,7 +591,7 @@ const RENDER_TEST_REPORT_HTML_STR = (data = {}) => {
                     </div>
                   </div>
                   <div class="item-info">
-                    <span>请求状况：{{(item?.http_error === 1 || item.assert_error === 1) ? '失败' : '成功'}}</span>
+                    <span>请求状况：{{(item?.http_error === 1) ? '失败' : '成功'}}</span>
                     <span>状态码：{{item?.response?.data?.response?.code}}</span>
                     <span>响应时间：{{item?.response?.data?.response?.responseTime}}ms</span>
                     <span>响应数据大小：{{item?.response?.data?.response?.responseSize}}kb</span>
