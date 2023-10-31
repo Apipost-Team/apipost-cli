@@ -13,8 +13,8 @@
   "author": "Apipost Team",
   "license": "UNLICENSED",
   "dependencies": {
-    "apipost-inside-tools": "^0.1.54",
-    "apipost-runtime": "^1.1.100",
+    "apipost-inside-tools": "^0.1.69",
+    "apipost-runtime": "^1.1.126",
     "cli-progress": "^3.12.0",
     "cli-table3": "^0.6.3",
     "colors": "^1.4.0",
