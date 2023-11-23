@@ -463,7 +463,7 @@ const RENDER_TEST_REPORT_HTML_STR = (data = {}) => {
                 {{each value.logList item key}}
                 <div data-text="{{key}}" id="{{key}}" class="test-event-item">
                   <div class="panel">
-                    {{if item.http_error === -1 && && item.assert_error === -1}}
+                    {{if item.http_error === -1 && item.assert_error === -1}}
                     <img class="status" src="https://img.cdn.apipost.cn/cdn/test-report/img/success.png" alt="" />
                     {{/if}} {{if item.http_error === 1 || item.assert_error === 1}}
                     <img class="status" src="https://img.cdn.apipost.cn/cdn/test-report/img/error.png" alt="" />
