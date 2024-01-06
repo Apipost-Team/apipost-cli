@@ -74,6 +74,18 @@ const runTestEvents = async (data, options) => {
     }
   }
 
+  //fix apipost-runtime@126 修复数option env 不为空时，pre_url 重命名为 env_pre_url
+  if (_.has(newOptions, 'option.env.pre_url') && (!_.has(newOptions, 'option.env.env_pre_url'))) {
+    _.set(newOptions, 'option.env.env_pre_url', _.get(newOptions, 'option.env.pre_url'));
+  }
+  if (_.has(newOptions, 'option.env.name') && (!_.has(newOptions, 'option.env.env_name'))) {
+    _.set(newOptions, 'option.env.env_name', _.get(newOptions, 'option.env.name'));
+  }
+  if (_.has(newOptions, 'option.env.pre_urls') && (!_.has(newOptions, 'option.env.env_pre_urls'))) {
+    _.set(newOptions, 'option.env.env_pre_urls', _.get(newOptions, 'option.env.pre_urls'));
+  }
+
+
   // 外部数据文件
   if (cliOption.iterationData != '') {
     try {
@@ -112,9 +124,11 @@ const runTestEvents = async (data, options) => {
       passphrase: cliOption.sslClientPassphrase
     })
     .value();
+  
 
   const myCollection = new Collection(newOptions?.test_events, { iterationCount: newOptions?.option?.iterationCount, sleep: newOptions?.option.sleep });
   const runTimeEvent = new Runtime(emitRuntimeEvent, false);
+
   await runTimeEvent.run(myCollection.definition, newOptions?.option);
 
   // 处理文件过大错误问题
@@ -153,7 +167,9 @@ const parseCommandString = async (url, options) => {
       fs.appendFileSync(path.join(homedir, 'apipost-cli-error.log'), `${formattedTime}\t请执行正确的url链接 [${url}]\n`);
       return;
     }
+
     let response = await nodeFetch(url);
+  
     let runData = await response.json();
 
     if (_.has(runData, 'code')) {
@@ -205,7 +221,6 @@ const bindEvent = (program) => {
   program.on('-h --help', () => {
     console.log('如何使用 Apipost');
   });
-
   program.parse();
 }
 
