@@ -19,6 +19,10 @@ npm install -g apipost-cli
 apipost run 'https://v7-api-test.apipost.cc/api/cli/open?type=single&id=7e58e858-c1ce-4c97-a0bf-5c0a559d9422&token=pnaoakyf4ivnqmi905sj82e0j60y0w6l' -r json,html -n 2
 ```
 
+```console
+apipost run data.json -r json,html -n 2
+```
+
 ## Options type:Object
 
 ```

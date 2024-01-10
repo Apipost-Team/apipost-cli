@@ -5,6 +5,7 @@ const { Collection, Runtime } = require('apipost-runtime');
 const { isObject } = require('lodash');
 const downloadTestReport = require('./template');
 const nodeFetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const https = require('https');
 const os = require('os');
 const dayjs = require('dayjs');
 const APTools = require('apipost-inside-tools');
@@ -16,6 +17,21 @@ const homedir = os.homedir();
 const request = require('request');
 let now = dayjs();
 let formattedTime = now.format('YYYY-MM-DD HH:mm:ss');
+
+// 创建一个https代理对象，用于在请求时忽略证书有效性
+const https_agent = new https.Agent({  
+  rejectUnauthorized: false
+});
+
+// 重定向 stderr 输出到自定义处理函数
+// todo: 等runtime修正后，去掉
+const originalStderrWrite = process.stderr.write;
+process.stderr.write = function(message, encoding, fd) {
+  if (typeof message === 'string' && message.includes('[@faker-js/faker]')) {
+    return;
+  }
+  originalStderrWrite.apply(process.stderr, arguments); // 输出到原始 stderr
+};
 
 program.version(pkginfo.version, '-v, --version', 'apipost-cli 当前版本')
 
@@ -158,19 +174,43 @@ const runTestEvents = async (data, options) => {
 }
 
 const parseCommandString = async (url, options) => {
+  console.log(`log: ${formattedTime}\tstart run & log to ${path.join(homedir, 'apipost-cli-error.log')}`);
   _.merge(cliOption, _.mapKeys(options, (value, key) => _.camelCase(key)))
 
   if (_.intersection(_.split(cliOption.reporters, ','), ['html', 'json'])) {
     const urlRegex = /^(?:(?:https?|ftp):\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|[\w-]+(?:\.[\w-]+)+)(?::\d+)?(?:\/[\w-]+)*(?:\?[\w-]+=[\w-]+(?:&[\w-]+=[\w-]+)*)?(?:#[\w-]+)?$/;
     if (!urlRegex.test(url)) {
-      console.log(`请执行正确的url链接 [${url}]`);
-      fs.appendFileSync(path.join(homedir, 'apipost-cli-error.log'), `${formattedTime}\t请执行正确的url链接 [${url}]\n`);
-      return;
+      if (!url.includes('://')) {
+        if (!fs.existsSync(url)){
+          console.log(`读取本地文件${filePath}失败, 原因 [文件不存在]`);
+          fs.appendFileSync(path.join(homedir, 'apipost-cli-error.log'), `${formattedTime}\t读取本地文件${filePath}失败, 原因 [文件不存在]\n`);
+          return;
+        }
+      }else{
+        console.log(`请执行正确的url链接 [${url}]`);
+        fs.appendFileSync(path.join(homedir, 'apipost-cli-error.log'), `${formattedTime}\t请执行正确的url链接 [${url}]\n`);
+        return;
+      }
     }
 
-    let response = await nodeFetch(url);
-  
-    let runData = await response.json();
+    let runData;
+
+    //url 不包含 :// 直接读取本地文件
+    if (!url.includes('://')) {
+      try {
+        const data = fs.readFileSync(url, 'utf8');
+        runData = JSON.parse(data);
+      } catch (err) {
+        console.log(`读取本地文件失败, 原因 [${err.message}]`);
+        fs.appendFileSync(path.join(homedir, 'apipost-cli-error.log'), `${formattedTime}\t读取本地文件失败, 原因 [${err.message}]\n`);
+        return;
+      }
+    }else{
+      //增加https 证书忽略
+      let response = await nodeFetch(url, https_agent);
+    
+      runData = await response.json();
+    }
 
     if (_.has(runData, 'code')) {
       if (runData.code === 10000 && _.isObject(_.get(runData, 'data'))) {
