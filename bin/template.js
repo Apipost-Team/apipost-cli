@@ -771,7 +771,7 @@ const downloadTestReport = async (data, options, request) => {
         ? RENDER_TEST_REPORT_HTML_STR(data)
         : JSON.stringify(data, null, '\t');
 
-      const finalFilePath = path.resolve(options.outDir, `${options.outFile || `apipost-reports-${formattedTime}`}.${type}`);
+      const finalFilePath = path.join(options.outDir, `${options.outFile || `apipost-reports-${formattedTime}`}.${type}`);
 
       let retries = 0;
 

@@ -37,9 +37,10 @@ program.version(pkginfo.version, '-v, --version', 'apipost-cli 当前版本')
 
 let last_msg = "";
 
+const currentWorkingDirectory = process.cwd();
 const cliOption = {
   reporters: 'cli',
-  outDir: './apipost-reports',
+  outDir: path.join(currentWorkingDirectory, "/apipost-reports"),
   outFile: '',
   iterationData: '',
   iterationCount: 1,
@@ -174,8 +175,12 @@ const runTestEvents = async (data, options) => {
 }
 
 const parseCommandString = async (url, options) => {
-  console.log(`log: ${formattedTime}\tstart run & log to ${path.join(homedir, 'apipost-cli-error.log')}`);
+  //判断是否有outDir， 如果把路径解析成绝对路径
+  if (options.outDir) {
+    options.outDir = path.resolve(options.outDir);
+  }
   _.merge(cliOption, _.mapKeys(options, (value, key) => _.camelCase(key)))
+  console.log(`log: ${formattedTime}\tstart run & log to ${path.join(homedir, 'apipost-cli-error.log')} & report dir ${cliOption.outDir}`);
 
   if (_.intersection(_.split(cliOption.reporters, ','), ['html', 'json'])) {
     const urlRegex = /^(?:(?:https?|ftp):\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|[\w-]+(?:\.[\w-]+)+)(?::\d+)?(?:\/[\w-]+)*(?:\?[\w-]+=[\w-]+(?:&[\w-]+=[\w-]+)*)?(?:#[\w-]+)?$/;
