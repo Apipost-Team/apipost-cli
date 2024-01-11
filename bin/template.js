@@ -765,6 +765,17 @@ const downloadTestReport = async (data, options, request) => {
   const now = dayjs();
   const formattedTime = now.format('YYYY-MM-DD HH:mm:ss');
 
+  //检查options.outDir 是否存在，是否是目录
+  if (!fs.existsSync(options.outDir)) {
+    try {
+      fs.mkdirSync(options.outDir, { recursive: true });
+    }catch(e){
+      console.log(`${formattedTime}\t 报告目录${options.outDir}无法创建成功,${String(err)}, 报告保存失败`)
+      fs.appendFileSync(path.join(homedir, 'apipost-cli-error.log'), `${formattedTime}\t${String(err)}\n`);
+      return
+    }
+  }
+  
   for (const type of options.reporters.split(',')) {
     if (['html', 'json'].indexOf(type) > -1) {
       const reportContent = type === 'html'
@@ -775,25 +786,13 @@ const downloadTestReport = async (data, options, request) => {
 
       let retries = 0;
 
-      while (true) {
+      for (let i = 0; i < 2; i++) {
         try {
           fs.writeFileSync(finalFilePath, reportContent);
           break;
         } catch (err) {
+          console.log(`${formattedTime}\t ${finalFilePath}报告保存失败,${String(err)}, 重试中...`)
           fs.appendFileSync(path.join(homedir, 'apipost-cli-error.log'), `${formattedTime}\t${String(err)}\n`);
-
-          if (err.code === 'ENOENT') {
-            fs.mkdirSync(options.outDir, { recursive: true });
-            continue;
-          }
-
-          if (err.code === 'EMFILE' && retries < 10) {
-            retries++;
-            await new Promise(resolve => setTimeout(resolve, 50 * retries));
-            continue;
-          }
-
-          throw err;
         }
       }
     }
