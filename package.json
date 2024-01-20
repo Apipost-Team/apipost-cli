@@ -1,6 +1,6 @@
 {
   "name": "apipost-cli",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Apipost 命令行运行工具",
   "main": "./dist/index.js",
   "files": [

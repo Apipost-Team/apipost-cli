@@ -91,6 +91,7 @@ const runTestEvents = async (data, options) => {
     }
   }
 
+
   //fix apipost-runtime@126 修复数option env 不为空时，pre_url 重命名为 env_pre_url
   if (_.has(newOptions, 'option.env.pre_url') && (!_.has(newOptions, 'option.env.env_pre_url'))) {
     _.set(newOptions, 'option.env.env_pre_url', _.get(newOptions, 'option.env.pre_url'));
@@ -179,6 +180,25 @@ const parseCommandString = async (url, options) => {
   if (options.outDir) {
     options.outDir = path.resolve(options.outDir);
   }
+  if (options.cacheDir){
+    // Check if options.cacheDir is a directory
+    try {
+      const stats = fs.statSync(options.cacheDir);
+      if (!stats.isDirectory()) {
+        console.log(`cacheDir ${options.cacheDir} is not a directory.`);
+        fs.appendFileSync(path.join(homedir, 'apipost-cli-error.log'), `${formattedTime}\tcacheDir ${options.cacheDir} is not a directory.\n`);
+        return;
+      }
+    } catch (err) {
+      console.log(`cacheDir ${options.cacheDir} does not exist.`);
+      fs.appendFileSync(path.join(homedir, 'apipost-cli-error.log'), `${formattedTime}\tcacheDir ${options.cacheDir} does not exist.\n`);
+      return;
+    }
+  }else{
+    options.cacheDir = os.tmpdir();
+  }
+  process.env['TMPDIR'] = options.cacheDir;
+
   _.merge(cliOption, _.mapKeys(options, (value, key) => _.camelCase(key)))
   console.log(`log: ${formattedTime}\tstart run & log to ${path.join(homedir, 'apipost-cli-error.log')} & report dir ${cliOption.outDir}`);
 
@@ -258,6 +278,7 @@ const bindEvent = (program) => {
     .option('--ssl-client-key <path>', `指定客户端证书私钥路径 (KEY file) `)
     .option('--ssl-client-passphrase <passphrase>', `指定客户端证书密码 (for protected key)`)
     .option('--ssl-extra-ca-certs <path>', `指定额外受信任的 CA 证书 (PEM)`)
+    .option('--cache-dir <path>', `临时文件夹，当默认临时文件夹不可用时主动指定`)
     // .option('--web-hook <url>', `Web-hook用于在任务完成后向指定URL发送数据 (POST) `)
     .action((url, options) => {
       parseCommandString(url, options)
