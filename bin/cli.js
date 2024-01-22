@@ -68,6 +68,12 @@ const emitRuntimeEvent = (msg, request) => {
       // 完成
       if (msg?.action === 'complate') {
         // if (validator.isURL(options.webHook)) {}
+        if (msg?.test_report){
+          if (_.isUndefined(msg?.test_report["logList"])){
+            msg.test_report["logList"] = [];
+          }else{}
+        }
+       
         downloadTestReport(msg?.test_report || {}, cliOption, request);
       }
     }
@@ -198,6 +204,8 @@ const parseCommandString = async (url, options) => {
     options.cacheDir = os.tmpdir();
   }
   process.env['TMPDIR'] = options.cacheDir;
+
+  process.env['IS_CLI'] = '1'; //强制标识为cli
 
   _.merge(cliOption, _.mapKeys(options, (value, key) => _.camelCase(key)))
   console.log(`log: ${formattedTime}\tstart run & log to ${path.join(homedir, 'apipost-cli-error.log')} & report dir ${cliOption.outDir}`);

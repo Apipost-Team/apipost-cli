@@ -1,6 +1,6 @@
 {
   "name": "apipost-cli",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Apipost 命令行运行工具",
   "main": "./dist/index.js",
   "files": [
@@ -23,7 +23,7 @@
   "devDependencies": {
     "@vercel/ncc": "^0.38.1",
     "apipost-inside-tools": "^0.1.69",
-    "apipost-runtime": "^1.1.126",
+    "apipost-runtime": "^2.0.5",
     "cli-progress": "^3.12.0",
     "cli-table3": "^0.6.3",
     "colors": "^1.4.0",
